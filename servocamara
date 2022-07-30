@@ -1,0 +1,33 @@
+from machine import Pin, PWM
+from time import *
+
+servo1 = PWM(Pin(12), freq=50) 
+
+def prueba_rango(servo_pin, vmin, vmax, duracion):
+    
+    for i in range (vmin,vmax):
+        servo_pin.duty(i)
+        print(i)
+        sleep(duracion)
+    
+    for i in range (vmax,vmin,-1):
+        servo_pin.duty(i)
+        print(i)
+        sleep(duracion)
+
+def por_angulo(value, fromLow, fromHigh, toLow, toHigh):
+    
+    m = (value - fromLow) * (toHigh - toLow) / (fromHigh - toLow) + toLow
+    return m
+
+def control_servo(a, servo_pin):
+    m = int(por_angulo(a, 0, 180, 18, 122))
+    servo_pin.duty(m)
+    
+
+
+
+while True:
+    a = int(input("Definir un valor: "))
+    control_servo(a, servo1) 
+    
